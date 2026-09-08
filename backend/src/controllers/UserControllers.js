@@ -1,7 +1,9 @@
 
-const User=require("../model/User")
+const {User , UserDetails}=require("../model/User")
+
 
 const bcrypt=require("bcrypt")
+
 const jwt=require("jsonwebtoken")
 
 
@@ -11,10 +13,14 @@ const register=async(req,res)=>{
 
         const { name,role,email,password}=req.body;
 
-        const hashPassword=await bcrypt(password,10);
+        console.log(password)
+
+        const hashPassword=await bcrypt.hash(password,10);
+
+        console.log(hashPassword)
 
         const user=await User.create({
-            name,role,email,hashPassword
+            name,role,email,password:hashPassword
         });
 
         const accessToken = jwt.sign(
@@ -34,7 +40,12 @@ const register=async(req,res)=>{
 
         res.status(200).json({
             message:"user registered successfully",
-            user
+            user:{
+                email:user.email,
+                role:user.role,
+                id:user._id,
+                name:user.name
+            }
         })
 
     }
@@ -54,7 +65,8 @@ const login=async(req,res)=>{
 
         const email=req.body.email;
         const  password=req.body.password;
-const user = await User.findOne({ email });
+        
+        const user = await User.findOne({ email });
 
         console.log("Email received:", email);
         console.log("User found:", !!user);
@@ -115,7 +127,63 @@ const user = await User.findOne({ email });
     }
 };
 
+const createProfile=async(req,res)=>{
+
+
+    try{
+
+        const { city, pinCode , address, houseNo, coordinates}=req.body;
+
+        const user=req.user.userId;
+
+        let profileImage = null;
+
+        if (req.file) {
+
+            profileImage = await new Promise((resolve, reject) => {
+
+                const stream = cloudinary.uploader.upload_stream(
+                    {
+                        folder: "ngo-app/user-profiles",
+                        resource_type: "image"
+                    },
+                    (error, result) => {
+
+                        if (error) {
+                            reject(error);
+                        } else {
+                            resolve(result.secure_url);
+                        }
+
+                    }
+                );
+
+                stream.end(req.file.buffer);
+            });
+        }
+
+        const userProfile=await UserDetails.create({
+            city,pinCode,address,houseNo,coordinates , user:user , profile:profileImage
+        })
+
+        res.status(200).json({
+            message:"profile created success",
+            userProfile
+        })
+    }
+
+    catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+    }
+
+}
+
 module.exports = {
     register,
-    login
+    login,
+    createProfile
 }
