@@ -4,8 +4,10 @@ const { UserDetails } = require("../model/User")
 
 const crypto = require("crypto");
 
+const {getIO}=require('../../socket')
 
 const createItemReq = async (req, res) => {
+    
     try {
 
         const {
@@ -27,6 +29,12 @@ const createItemReq = async (req, res) => {
             });
         }
 
+        const admin = await User.findOne({
+            role: "admin"
+        });
+
+        const adminId = admin._id;
+
         
         const trackingId =
             "WM-" + crypto.randomBytes(4).toString("hex").toUpperCase();
@@ -40,6 +48,15 @@ const createItemReq = async (req, res) => {
             weight,
             status: "submitted"
         });
+
+        const io=getIO()
+
+        io.to(`admin_${adminId}`).emit("newItemRequest" , {
+
+            message:"new item req received",
+            item
+
+        })
 
         res.status(201).json({
             message: "Item request created",

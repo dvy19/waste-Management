@@ -6,7 +6,6 @@ const bcrypt=require("bcrypt")
 
 const jwt=require("jsonwebtoken")
 
-
 const register=async(req,res)=>{
 
     try{
@@ -132,7 +131,7 @@ const createProfile=async(req,res)=>{
 
     try{
 
-        const { city, pinCode , address, houseNo, coordinates}=req.body;
+        const { city, pinCode , address,  coordinates}=req.body;
 
         const user=req.user.userId;
 
@@ -163,7 +162,7 @@ const createProfile=async(req,res)=>{
         }
 
         const userProfile=await UserDetails.create({
-            city,pinCode,address,houseNo,coordinates , user:user , profile:profileImage
+            city,pinCode,address,coordinates , user:user , profile:profileImage
         })
 
         res.status(200).json({

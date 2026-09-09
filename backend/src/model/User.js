@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     role: {
       type: String,
-      enum: ["user"],
+      enum: ["user" , "admin"],
       default: "user"
     },
 
@@ -50,10 +50,6 @@ const userDetailsSchema = new mongoose.Schema(
     },
 
     pinCode: {
-      type: String
-    },
-
-    houseNo: {
       type: String
     },
 

@@ -11,11 +11,16 @@ app.use(express.json());
 const connectDB = require('./src/config/db');
 const http = require("http");
 
+const {initializeSocket}=require('./socket')
+
 const authRoutes=require('./src/routes/authRoutes')
+const adminRoutes=require('./src/routes/adminRoutes')
 
 const cookieParser = require("cookie-parser");
 
 const server=http.createServer(app)
+
+initializeSocket(server)
 
 
 app.get("/", (req, res) => {
@@ -24,6 +29,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/auth", authRoutes);
+app.use('/api/admin' , adminRoutes)
 
 const PORT = process.env.PORT || 5000;
 
