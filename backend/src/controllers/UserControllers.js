@@ -127,20 +127,14 @@ const login=async(req,res)=>{
 };
 
 const createProfile=async(req,res)=>{
-
-
     try{
 
         const { city, pinCode , address,  coordinates}=req.body;
-
         const user=req.user.userId;
 
         let profileImage = null;
-
         if (req.file) {
-
             profileImage = await new Promise((resolve, reject) => {
-
                 const stream = cloudinary.uploader.upload_stream(
                     {
                         folder: "ngo-app/user-profiles",
@@ -167,7 +161,7 @@ const createProfile=async(req,res)=>{
 
         res.status(200).json({
             message:"profile created success",
-            userProfile
+            data:userProfile
         })
     }
 
@@ -178,8 +172,10 @@ const createProfile=async(req,res)=>{
             message: "Server error"
         });
     }
-
 }
+
+
+
 
 module.exports = {
     register,
