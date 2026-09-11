@@ -1,5 +1,5 @@
 
-const {User , UserDetails}=require("../model/User")
+const {User , UserDetails, UserStats}=require("../model/User")
 
 
 const bcrypt=require("bcrypt")
@@ -132,6 +132,12 @@ const createProfile=async(req,res)=>{
         const { city, pinCode , address,  coordinates}=req.body;
         const user=req.user.userId;
 
+        await UserStats.create({
+            user: user,
+            points: 0,
+            itemsAdded: 0
+        });
+
         let profileImage = null;
         if (req.file) {
             profileImage = await new Promise((resolve, reject) => {
@@ -161,7 +167,8 @@ const createProfile=async(req,res)=>{
 
         res.status(200).json({
             message:"profile created success",
-            data:userProfile
+            data:userProfile,
+            
         })
     }
 

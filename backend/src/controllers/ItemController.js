@@ -1,10 +1,31 @@
 const Item=require("../model/Item")
-const { UserDetails } = require("../model/User")
+const { UserDetails , UserStats , CouponSchema } = require("../model/User")
+const { analyzeImage } = require("../service/geminiService");
+
+
 
 
 const crypto = require("crypto");
 
 const {getIO}=require('../../socket')
+
+const getUserStats=async(req,res)=>{
+
+    try{
+
+        const user=req.user.userId;
+
+        const stats=await UserStats.findOne({user})
+
+        req.status(200).json({
+            message:"user stats render",
+            stats
+        })
+    }
+    catch(err){
+        console.log(`${err}`)
+    }
+}
 
 const createItemReq = async (req, res) => {
     
@@ -29,11 +50,24 @@ const createItemReq = async (req, res) => {
             });
         }
 
-        const admin = await User.findOne({
-            role: "admin"
-        });
+        
 
-        const adminId = admin._id;
+        //const adminId = admin._id;
+
+       const userStats = await UserStats.findOne({ user: userProfile.user });
+
+        if (userStats) {
+            userStats.itemsAdded += quantity;
+            userStats.points += quantity * 10;
+
+            await userStats.save();
+        } else {
+            await UserStats.create({
+                user: userProfile.user,
+                itemsAdded: quantity,
+                points: quantity * 10
+            });
+        }
 
         
         const trackingId =
@@ -116,4 +150,33 @@ const getItemById=async(req,res)=>{
 
 }
 
-module.exports={createItemReq , getItemReq , getItemById}
+
+const analyzeWasteImage = async (req, res) => {
+    try {
+        const image = req.file;
+
+        if (!image) {
+            return res.status(400).json({
+                message: "Image is required"
+            });
+        }
+
+        const result = await analyzeImage(
+            image.buffer,
+            image.mimetype
+        );
+
+        res.status(200).json(result);
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Failed to analyze image"
+        });
+    }
+};
+
+
+
+module.exports={createItemReq , getItemReq , getItemById  , analyzeWasteImage , getUserStats}

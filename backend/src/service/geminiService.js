@@ -9,38 +9,41 @@ const analyzeImage = async (imageBuffer, mimeType) => {
     try {
 
         const prompt = `
-            You are a waste management and recycling assistant.
+                    You are a waste management and recycling assistant.
 
-            Analyze the provided image and identify the waste/material shown.
+                    Analyze the provided image and identify the waste/material shown.
 
-            Then suggest practical ways to:
-            1. Reuse the item
-            2. Make crafts or useful products from it
-            3. Recycle it if reuse is not practical
+                    Then suggest practical ways to:
+                    1. Reuse the item
+                    2. Make crafts or useful products from it
+                    3. Recycle it if reuse is not practical
 
-            Return the response in JSON format:
+                    Provide exactly ONE practical reuse idea.
+                    Do not provide multiple reuse ideas.
 
-            {
-                "item": "name of the item",
-                "material": "material type",
-                "condition": "usable/damaged/etc",
-                "reuseIdeas": [
+                    Return the response in JSON format:
+
                     {
-                        "title": "idea name",
-                        "description": "short explanation",
-                        "difficulty": "Easy/Medium/Hard",
-                        "materials": [],
-                        "steps": []
+                        "item": "name of the item",
+                        "material": "material type",
+                        "condition": "usable/damaged/etc",
+                        "reuseIdeas": [
+                            {
+                                "title": "idea name",
+                                "description": "short explanation",
+                                "difficulty": "Easy/Medium/Hard",
+                                "materials": [],
+                                "steps": []
+                            }
+                        ],
+                        "recyclingAdvice": "recycling or disposal advice"
                     }
-                ],
-                "recyclingAdvice": "recycling or disposal advice"
-            }
 
-            Only return valid JSON.
-        `;
+                    Only return valid JSON.
+            `;
 
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-3.5-flash",
             contents: [
                 {
                     text: prompt

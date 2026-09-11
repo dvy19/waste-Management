@@ -15,6 +15,7 @@ const {initializeSocket}=require('./socket')
 
 const authRoutes=require('./src/routes/authRoutes')
 const adminRoutes=require('./src/routes/adminRoutes')
+const itemRoutes=require('./src/routes/itemRoutes')
 
 const cookieParser = require("cookie-parser");
 
@@ -29,7 +30,8 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/user", authRoutes);
-app.use('/api/admin' , adminRoutes)
+app.use('/api/admin' , adminRoutes);
+app.use('/api/item' , itemRoutes)
 
 const PORT = process.env.PORT || 5000;
 
