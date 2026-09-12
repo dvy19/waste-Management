@@ -16,6 +16,6 @@ router.post("/register", register);
 router.post("/login", login);
 
 router.post("/create-profile", authMiddleware , createProfile);
-router.post('/get-profile' , authMiddleware , getProfile)
+router.get('/get-profile' , authMiddleware , getProfile)
 
 module.exports = router;
