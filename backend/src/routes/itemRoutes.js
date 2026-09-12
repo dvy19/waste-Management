@@ -4,7 +4,6 @@ const express=require("express")
 const router=express.Router()
 
 const upload=require('../middleware/upload')
-const authMiddleware=require('../middleware/authMiddleware')
 
 const {createItemReq , getItemReq , getItemById , analyzeWasteImage , getUserStats}=require('../controllers/ItemController')
 const authMiddleware = require("../middleware/authMiddleware")
