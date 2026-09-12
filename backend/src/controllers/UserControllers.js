@@ -174,11 +174,30 @@ const createProfile=async(req,res)=>{
     }
 }
 
+const getProfile=async(req,res)=>{
+
+    try{
+
+        const user=req.user.userId;
+
+        const profile=await UserDetails.findOne({user}).populate("user")
+
+        res.status(200).json({
+            message:"successfull",
+            profile
+        })
+    }
+    catch(err){
+        console.log(`${err}`)
+    }
+}
+
 
 
 
 module.exports = {
     register,
     login,
-    createProfile
+    createProfile,
+    getProfile
 }
