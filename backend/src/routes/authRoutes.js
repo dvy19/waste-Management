@@ -12,18 +12,8 @@ const {
 } = require("../controllers/UserControllers");
 
 
-const {
-    firebaseLogin
-} = require("../controllers/firebaseController");
 
-const verifyFirebaseToken = require("../middleware/firebaseAuth");
 
-router.post(
-    "/firebase-login",
-    authMiddleware,
-    verifyFirebaseToken,
-    firebaseLogin
-);
 
 router.post("/register", register);
 
