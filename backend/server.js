@@ -17,6 +17,8 @@ const authRoutes=require('./src/routes/authRoutes')
 const adminRoutes=require('./src/routes/adminRoutes')
 const itemRoutes=require('./src/routes/itemRoutes')
 
+const paymentRoutes=require('./src/routes/paymentRoutes')
+
 const cookieParser = require("cookie-parser");
 
 const server=http.createServer(app)
@@ -37,6 +39,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/user", authRoutes);
 app.use('/api/admin' , adminRoutes);
 app.use('/api/item' , itemRoutes)
+app.use('/api/payment' , paymentRoutes)
 
 const PORT = process.env.PORT || 5000;
 

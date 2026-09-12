@@ -11,6 +11,20 @@ const {
     getProfile
 } = require("../controllers/UserControllers");
 
+
+const {
+    firebaseLogin
+} = require("../controllers/authController");
+
+const verifyFirebaseToken = require("../middleware/firebaseAuth");
+
+router.post(
+    "/firebase-login",
+    authMiddleware,
+    verifyFirebaseToken,
+    firebaseLogin
+);
+
 router.post("/register", register);
 
 router.post("/login", login);

@@ -1,23 +1,28 @@
 const jwt = require("jsonwebtoken");
-
 const authMiddleware = (req, res, next) => {
     try {
         let token;
 
-        // Get token from Authorization header
+        // 1. Check Authorization header (React Native)
         const authHeader = req.headers.authorization;
 
         if (authHeader && authHeader.startsWith("Bearer ")) {
             token = authHeader.split(" ")[1];
         }
 
+        // 2. If no header token, check cookie (React Web)
+        if (!token && req.cookies?.accessToken) {
+            token = req.cookies.accessToken;
+        }
+
+        // 3. No token
         if (!token) {
             return res.status(401).json({
                 message: "No token provided"
             });
         }
 
-        // Verify token
+        // 4. Verify token
         const decoded = jwt.verify(
             token,
             process.env.JWT_SECRET
@@ -25,15 +30,12 @@ const authMiddleware = (req, res, next) => {
 
         console.log("DECODED:", decoded);
 
-        // Attach user information
+        // 5. Attach user
         req.user = decoded;
 
         next();
 
-    } catch (err) {
-        console.log("AUTH ERROR:", err.name);
-        console.log("AUTH ERROR MESSAGE:", err.message);
-
+    } catch (error) {
         return res.status(401).json({
             message: "Invalid or expired token"
         });

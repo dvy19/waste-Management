@@ -68,11 +68,6 @@ const createItemReq = async (req, res) => {
 
         let coupon=null;
 
-       
-
-
-        
-
         if(userStats.points>=500){
 
                 const couponId =
@@ -135,6 +130,35 @@ const createItemReq = async (req, res) => {
     }
 };
 
+const getAllUserItems=async(req,res)=>{
+
+    try{
+        const user=req.user.userId;
+
+        const userProfile=await UserDetails.findOne({user:user})
+
+        const {status}=req.query;
+
+        const filter={
+            user:userProfile._id
+        }
+
+        if(status){
+            filter.status=status
+        }
+
+        const items=await Item.find(filter).sort({ createdAt: -1 });
+
+        res.status(200).json({
+            message:"all items rendered",
+            items
+        })
+    }
+    catch(err){
+        console.log(`${err}`)
+    }
+}
+/*
 const getItemReq=async(req,res)=>{
 
     try{
@@ -154,6 +178,7 @@ const getItemReq=async(req,res)=>{
         });
     }
 }
+*/
 
 const getItemById=async(req,res)=>{
 
@@ -207,4 +232,4 @@ const analyzeWasteImage = async (req, res) => {
 
 
 
-module.exports={createItemReq , getItemReq , getItemById  , analyzeWasteImage , getUserStats}
+module.exports={createItemReq ,  getItemById  , analyzeWasteImage , getUserStats , getAllUserItems}

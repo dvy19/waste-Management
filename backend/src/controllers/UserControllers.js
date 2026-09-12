@@ -28,6 +28,14 @@ const register=async(req,res)=>{
             { expiresIn: "15m" }
         );
 
+
+        // Store token in HTTP-only cookie
+        res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: false, // true in production with HTTPS
+            sameSite: "lax",
+            maxAge: 15 * 60 * 1000
+        });
        
 
 
@@ -92,6 +100,14 @@ const login=async(req,res)=>{
             { expiresIn: "15m" }
         );
 
+        // Store token in HTTP-only cookie
+        res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: false, // true in production with HTTPS
+            sameSite: "lax",
+            maxAge: 15 * 60 * 1000
+        });
+
 
 
             
@@ -119,7 +135,7 @@ const login=async(req,res)=>{
 const createProfile=async(req,res)=>{
     try{
 
-        const { city, pinCode , address,  coordinates}=req.body;
+        const { city, pinCode , address,  coordinates , phoneNumber}=req.body;
 
         console.log(req.body)
         const user=req.user.userId;
@@ -155,7 +171,7 @@ const createProfile=async(req,res)=>{
         }
 
         const userProfile=await UserDetails.create({
-            city,pinCode,address,coordinates , user:user , profile:profileImage
+            city,pinCode,address,coordinates , user:user , profile:profileImage , phoneNumber
         })
 
         res.status(200).json({
