@@ -17,7 +17,7 @@ const getUserStats=async(req,res)=>{
 
         const stats=await UserStats.findOne({user})
 
-        req.status(200).json({
+        res.status(200).json({
             message:"user stats render",
             stats
         })
