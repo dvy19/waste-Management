@@ -50,9 +50,7 @@ const createItemReq = async (req, res) => {
             });
         }
 
-        
-
-
+    
        const userStats = await UserStats.findOne({ user: userProfile.user });
 
         if (userStats) {
@@ -67,6 +65,33 @@ const createItemReq = async (req, res) => {
                 points: quantity * 10
             });
         }
+
+        let coupon=null;
+
+       
+
+
+        
+
+        if(userStats.points>=500){
+
+                const couponId =
+                    "CC-" + crypto.randomBytes(2).toString("hex").toUpperCase();
+
+                coupon=await CouponSchema.create({
+                user:user,
+                discount:20,
+                isUsed:false,
+                code:couponId
+            })
+
+            userStats.points -= 500;
+
+            await userStats.save();
+
+            }
+
+         
 
         
         const trackingId =
@@ -97,7 +122,8 @@ const createItemReq = async (req, res) => {
         res.status(201).json({
             message: "Item request created",
             trackingId: item.trackingId,
-            item
+            item,
+            coupon:coupon
         });
 
     } catch (error) {
