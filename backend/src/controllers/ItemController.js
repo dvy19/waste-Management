@@ -52,7 +52,6 @@ const createItemReq = async (req, res) => {
 
         
 
-        //const adminId = admin._id;
 
        const userStats = await UserStats.findOne({ user: userProfile.user });
 
@@ -82,6 +81,7 @@ const createItemReq = async (req, res) => {
             weight,
             status: "submitted"
         });
+        /*
 
         const io=getIO()
 
@@ -90,7 +90,9 @@ const createItemReq = async (req, res) => {
             message:"new item req received",
             item
 
+
         })
+            */
 
         res.status(201).json({
             message: "Item request created",
