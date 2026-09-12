@@ -29,6 +29,11 @@ app.get("/", (req, res) => {
 });
 
 
+// Health check
+app.get("/api/health", (req, res) => {
+    res.status(200).json({ status: "OK" });
+});
+
 app.use("/api/user", authRoutes);
 app.use('/api/admin' , adminRoutes);
 app.use('/api/item' , itemRoutes)

@@ -28,13 +28,7 @@ const register=async(req,res)=>{
             { expiresIn: "15m" }
         );
 
-        // Store token in HTTP-only cookie
-        res.cookie("accessToken", accessToken, {
-            httpOnly: true,
-            secure: false, // true in production with HTTPS
-            sameSite: "lax",
-            maxAge: 15 * 60 * 1000
-        });
+       
 
 
         res.status(200).json({
@@ -44,7 +38,8 @@ const register=async(req,res)=>{
                 role:user.role,
                 id:user._id,
                 name:user.name
-            }
+            },
+            token:accessToken
         })
 
     }
@@ -97,13 +92,7 @@ const login=async(req,res)=>{
             { expiresIn: "15m" }
         );
 
-        // Store token in HTTP-only cookie
-        res.cookie("accessToken", accessToken, {
-            httpOnly: true,
-            secure: false, // true in production with HTTPS
-            sameSite: "lax",
-            maxAge: 15 * 60 * 1000
-        });
+
 
             
         res.status(200).json({
@@ -113,6 +102,7 @@ const login=async(req,res)=>{
                 role: user.role,
                 email: user.email,
             },
+            token:accessToken
 
         });
 
@@ -130,6 +120,7 @@ const createProfile=async(req,res)=>{
     try{
 
         const { city, pinCode , address,  coordinates}=req.body;
+
         const user=req.user.userId;
 
         await UserStats.create({
