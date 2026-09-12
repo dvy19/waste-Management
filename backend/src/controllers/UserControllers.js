@@ -121,7 +121,9 @@ const createProfile=async(req,res)=>{
 
         const { city, pinCode , address,  coordinates}=req.body;
 
+        console.log(req.body)
         const user=req.user.userId;
+        console.log(user)
 
         await UserStats.create({
             user: user,
