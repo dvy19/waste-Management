@@ -14,7 +14,7 @@ const {
 
 const {
     firebaseLogin
-} = require("../controllers/authController");
+} = require("../controllers/firebaseController");
 
 const verifyFirebaseToken = require("../middleware/firebaseAuth");
 
