@@ -8,7 +8,7 @@ const upload=require('../middleware/upload')
 const {createItemReq ,getAllUserItems , getItemById , analyzeWasteImage , getUserStats}=require('../controllers/ItemController')
 const authMiddleware = require("../middleware/authMiddleware")
 
-router.post('/create-item' , authMiddleware , createItemReq)
+router.post('/create-item' , upload.single("image") , authMiddleware , createItemReq)
 
 //router.get('/get-item' , authMiddleware, getItemReq)
 

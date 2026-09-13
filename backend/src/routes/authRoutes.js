@@ -12,6 +12,7 @@ const {
 } = require("../controllers/UserControllers");
 
 
+const upload=require('../middleware/upload')
 
 
 
@@ -19,7 +20,7 @@ router.post("/register", register);
 
 router.post("/login", login);
 
-router.post("/create-profile", authMiddleware , createProfile);
+router.post("/create-profile", upload.single("profile"), authMiddleware , createProfile);
 router.get('/get-profile' , authMiddleware , getProfile)
 
 module.exports = router;

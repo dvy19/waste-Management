@@ -31,6 +31,8 @@ const createItemReq = async (req, res) => {
     
     try {
 
+        //console.log(req.body)
+
         const {
             name,
             category,

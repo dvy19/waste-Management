@@ -3,6 +3,10 @@ const authMiddleware = (req, res, next) => {
     try {
         let token;
 
+
+        console.log("Authorization:", req.headers.authorization);
+        console.log("Cookies:", req.cookies);
+
         // 1. Check Authorization header (React Native)
         const authHeader = req.headers.authorization;
 

@@ -1,6 +1,7 @@
 
 const {User , UserDetails, UserStats}=require("../model/User")
 
+const cloudinary=require('../config/cloudinary')
 
 const bcrypt=require("bcrypt")
 
@@ -135,7 +136,12 @@ const login=async(req,res)=>{
 const createProfile=async(req,res)=>{
     try{
 
-        const { city, pinCode , address,  coordinates , phoneNumber}=req.body;
+        console.log(req.body)
+
+
+        const { city, pinCode , address, phoneNumber}=req.body;
+
+        const coordinates = JSON.parse(req.body.coordinates);
 
         console.log(req.body)
         const user=req.user.userId;
