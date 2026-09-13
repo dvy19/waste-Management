@@ -14,7 +14,7 @@ const {initializeSocket}=require('./socket')
 
 const cookieParser = require("cookie-parser");
 
-app.use(cookieParser)
+app.use(cookieParser())
 
 const authRoutes=require('./src/routes/authRoutes')
 const adminRoutes=require('./src/routes/adminRoutes')

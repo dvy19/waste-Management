@@ -8,6 +8,8 @@ const item=new mong.Schema({
         ref:"UserProfile"
     },
 
+    image:String,
+
     name:String,
 
     trackingId: {
