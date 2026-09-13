@@ -12,12 +12,16 @@ const http = require("http");
 
 const {initializeSocket}=require('./socket')
 
+const cookieParser = require("cookie-parser");
+
+app.use(cookieParser)
+
 const authRoutes=require('./src/routes/authRoutes')
 const adminRoutes=require('./src/routes/adminRoutes')
 const itemRoutes=require('./src/routes/itemRoutes')
 
 
-const cookieParser = require("cookie-parser");
+
 
 const server=http.createServer(app)
 
