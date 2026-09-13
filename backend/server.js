@@ -5,7 +5,6 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 
 const connectDB = require('./src/config/db');
@@ -29,6 +28,10 @@ app.get("/", (req, res) => {
     res.send("Server is running");
 });
 
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 // Health check
 app.get("/api/health", (req, res) => {
