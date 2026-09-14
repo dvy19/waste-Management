@@ -1,8 +1,8 @@
 const Item=require("../model/Item")
-const { UserDetails , UserStats , CouponSchema } = require("../model/User")
+const { UserDetails , UserStats , CouponSchema  , User} = require("../model/User")
 const { analyzeImage } = require("../service/geminiService");
 
-
+const cloudinary=require('../config/cloudinary')
 
 
 const crypto = require("crypto");
@@ -51,6 +51,29 @@ const createItemReq = async (req, res) => {
                 message: "User profile not found"
             });
         }
+
+         let image = null;
+                if (req.file) {
+                    image = await new Promise((resolve, reject) => {
+                        const stream = cloudinary.uploader.upload_stream(
+                            {
+                                folder: "ngo-app/item-image",
+                                resource_type: "image"
+                            },
+                            (error, result) => {
+        
+                                if (error) {
+                                    reject(error);
+                                } else {
+                                    resolve(result.secure_url);
+                                }
+        
+                            }
+                        );
+        
+                        stream.end(req.file.buffer);
+                    });
+                }
 
     
        const userStats = await UserStats.findOne({ user: userProfile.user });
@@ -101,20 +124,21 @@ const createItemReq = async (req, res) => {
             category,
             quantity,
             weight,
+            image:image,
             status: "submitted"
         });
-        /*
+        
 
         const io=getIO()
 
-        io.to(`admin_${adminId}`).emit("newItemRequest" , {
+        const admin = await User.findOne({ role: "admin" });
 
-            message:"new item req received",
-            item
-
-
-        })
-            */
+        if (admin) {
+            io.to(`admin_${admin._id}`).emit("newItemRequest", {
+                message: "new item req received",
+                item
+            });
+        }
 
         res.status(201).json({
             message: "Item request created",
@@ -160,7 +184,7 @@ const getAllUserItems=async(req,res)=>{
         console.log(`${err}`)
     }
 }
-/*
+
 const getItemReq=async(req,res)=>{
 
     try{
@@ -180,7 +204,7 @@ const getItemReq=async(req,res)=>{
         });
     }
 }
-*/
+
 
 const getItemById=async(req,res)=>{
 
@@ -188,7 +212,11 @@ const getItemById=async(req,res)=>{
 
         const trackingId=req.params.trackingId;
 
+        //console.log(trackingId)
+
         const item=await Item.findOne({trackingId})
+
+        //console.log(item)
 
         res.status(201).json({
             message:"your item retreived",
@@ -234,4 +262,4 @@ const analyzeWasteImage = async (req, res) => {
 
 
 
-module.exports={createItemReq ,  getItemById  , analyzeWasteImage , getUserStats , getAllUserItems}
+module.exports={createItemReq ,  getItemById  , analyzeWasteImage , getUserStats , getAllUserItems , getItemReq}
