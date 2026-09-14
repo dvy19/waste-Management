@@ -118,7 +118,7 @@ const couponSchema = new mongoose.Schema({
     default: false
   },
 
-  expiresAt: Date
+  expiresAt: String
 });
 
 

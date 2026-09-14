@@ -90,30 +90,7 @@ const createItemReq = async (req, res) => {
                 points: quantity * 10
             });
         }
-
-        let coupon=null;
-
-        if(userStats.points>=500){
-
-                const couponId =
-                    "CC-" + crypto.randomBytes(2).toString("hex").toUpperCase();
-
-                coupon=await CouponSchema.create({
-                user:user,
-                discount:20,
-                isUsed:false,
-                code:couponId
-            })
-
-            userStats.points -= 500;
-
-            await userStats.save();
-
-            }
-
-         
-
-        
+  
         const trackingId =
             "WM-" + crypto.randomBytes(4).toString("hex").toUpperCase();
 
@@ -260,6 +237,41 @@ const analyzeWasteImage = async (req, res) => {
     }
 };
 
+const createCoupons=async(req,res)=>{
 
+    try{
+
+        const user=req.user.userId;
+
+        const userProfile=await  UserDetails.findOne({user})
+
+        const userStats = await UserStats.findOne({ user: userProfile.user });
+
+        const coupon=null;
+        if (userStats.points>=500) {
+            
+            coupon=await CouponSchema.create({
+                user:userProfile._id,
+                discount:20,
+                expiredAt:"2026",
+                isUsed:false
+            })
+        }
+
+        res.status(200).json({
+            message:"coupon created",
+            coupon
+        })
+    }
+    catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+    }
+
+
+}
 
 module.exports={createItemReq ,  getItemById  , analyzeWasteImage , getUserStats , getAllUserItems , getItemReq}
