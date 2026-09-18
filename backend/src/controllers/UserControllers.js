@@ -1,7 +1,9 @@
 
-const {User , UserDetails, UserStats}=require("../model/User")
+const {User , UserDetails, UserStats , OrderSchema , OrderStats}=require("../model/User")
 
 const cloudinary=require('../config/cloudinary')
+
+const {SaleItem}=require('../model/adminDetails')
 
 const bcrypt=require("bcrypt")
 
@@ -215,11 +217,120 @@ const getProfile=async(req,res)=>{
 }
 
 
+const createOrder=async(req,res)=>{
+    try{
+        
+        const user=req.user.userId;
+
+        //console.log(req.body)
+
+        const {id , amount , couponId, quantity , idempotencyKey}=req.body
+        console.log(id)
+
+        const item=await SaleItem.findById(id)
+
+        const userProfile=await UserDetails.findOne({user})
+
+        const existingOrder = await OrderSchema.findOne({
+            idempotencyKey
+        });
+
+        if (existingOrder) {
+
+            return res.status(200).json({
+                message: "Order already placed",
+                order: existingOrder
+            });
+        }
+
+        const order=await OrderSchema.create({
+            amount,
+            quantity,
+            idempotencyKey,
+            item:item._id,
+            user:userProfile._id,
+            coupon: couponId || null
+        })
+
+        await OrderStats.findOneAndUpdate(
+            { user: userProfile._id },
+            {
+                $inc: {
+                    orders: 1,
+                    spent: amount,
+                    items: quantity,
+                    couponUsed: couponId ? 1 : 0
+
+                }
+            },
+            {
+                upsert: true,
+                returnDocument: "after"
+            }
+        );
+
+        res.status(201).json({
+            message:"order created",
+            order
+        })
+
+    }
+     catch(err){
+        console.log(`${err}`)
+    }
+}
+
+const getUserOrders=async(req,res)=>{
+
+    try{
+
+        const user=req.user.userId;
+
+        const userProfile=await UserDetails.findOne({user})
+
+        const orders=await OrderSchema.find({user:userProfile._id}).populate("item")
+
+        res.status(200).json({
+            message:"all orders rendered",
+            orders
+        })
+
+    }
+    catch(err){
+        console.log(`${err}`)
+    }
+}
+
+const getOrderStats=async(req,res)=>{
+
+    try{
+
+        const user=req.user.userId
+        
+        const userDetails=await UserDetails.findOne({user})
+
+        const orderStats=await OrderStats.findOne({user:userDetails._id})
+
+        res.status(200).json({
+            message:"user stats",
+            orderStats
+        })
+    }
+
+    catch(err){
+        console.lgo(`${err}`)
+    }
+}
 
 
 module.exports = {
     register,
     login,
     createProfile,
-    getProfile
+    getProfile,
+
+    createOrder,
+    getUserOrders,
+
+    getOrderStats
 }

@@ -5,6 +5,8 @@ const { analyzeImage } = require("../service/geminiService");
 const cloudinary=require('../config/cloudinary')
 
 
+const {redisClient} = require('../config/redis')
+
 const crypto = require("crypto");
 
 const {getIO}=require('../../socket')
@@ -121,7 +123,6 @@ const createItemReq = async (req, res) => {
             message: "Item request created",
             trackingId: item.trackingId,
             item,
-            coupon:coupon
         });
 
     } catch (error) {
@@ -166,7 +167,7 @@ const getItemReq=async(req,res)=>{
 
     try{
 
-        const item=await Item.find().populate("user")
+        const item=await Item.find().sort({ createdAt: -1 })
 
         res.status(201).json({
             message:"item retreived",
@@ -189,9 +190,36 @@ const getItemById=async(req,res)=>{
 
         const trackingId=req.params.trackingId;
 
+        const redisKey = `item:${trackingId}`;
+
+        // 1. Check Redis first
+        const cachedItem = await redisClient.get(redisKey);
+
+         if (cachedItem) {
+
+            console.log("Item fetched from Redis");
+
+            return res.status(200).json({
+                message: "your item retrieved",
+                item: JSON.parse(cachedItem)
+            });
+        }
+
+        console.log("Item fetched from MongoDB");
+
+
+
         //console.log(trackingId)
 
         const item=await Item.findOne({trackingId})
+
+         await redisClient.set(
+            redisKey,
+            JSON.stringify(item),
+            {
+                EX: 600
+            }
+        );
 
         //console.log(item)
 
@@ -247,14 +275,27 @@ const createCoupons=async(req,res)=>{
 
         const userStats = await UserStats.findOne({ user: userProfile.user });
 
-        const coupon=null;
+        let coupon=null;
         if (userStats.points>=500) {
+
+            
+            const code =
+                "WCC-" + crypto.randomBytes(2).toString("hex").toUpperCase();
             
             coupon=await CouponSchema.create({
                 user:userProfile._id,
                 discount:20,
-                expiredAt:"2026",
-                isUsed:false
+                expiredAt: new Date("2026-12-31"),
+                isUsed:false,
+                code:code
+            })
+
+            userStats.points -= 500;
+            await userStats.save();
+        }
+        else{
+            return res.status(400).json({
+                message:"you must have 500 points to unlock the coupon"
             })
         }
 
@@ -270,8 +311,66 @@ const createCoupons=async(req,res)=>{
             message: "Server error"
         });
     }
-
-
 }
 
-module.exports={createItemReq ,  getItemById  , analyzeWasteImage , getUserStats , getAllUserItems , getItemReq}
+const getUserCoupons=async(req,res)=>{
+
+    try{
+        const user=req.user.userId
+
+        const userProfile=await UserDetails.findOne({user})
+
+
+        const coupons=await CouponSchema.find({user:userProfile._id})
+
+
+        res.status(200).json({
+            message:"al couponds rendered",
+            coupons
+        })
+    }
+     catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+    }
+}
+const checkCoupon = async (req, res) => {
+    try {
+        const { code } = req.body;
+
+        const coupon = await CouponSchema.findOne({ code });
+
+        if (!coupon) {
+            return res.status(404).json({
+                message: "Invalid coupon"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Coupon is valid",
+            coupon,
+            valid:true
+        });
+
+    } catch (err) {
+        console.log(err);
+
+        return res.status(500).json({
+            message: "Server error"
+        });
+    }
+};
+module.exports={
+    createItemReq ,
+    getUserCoupons,
+    createCoupons, 
+    getItemById  , 
+    analyzeWasteImage , 
+    getUserStats , 
+    getAllUserItems , 
+    getItemReq , 
+    checkCoupon
+}

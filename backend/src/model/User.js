@@ -118,11 +118,77 @@ const couponSchema = new mongoose.Schema({
     default: false
   },
 
-  expiresAt: String
+  expiresAt: Date
+});
+
+const userOrder=new mongoose.Schema({
+
+  user:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User"
+  },
+
+  item: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "SaleItem",
+        required: true
+  },
+
+  quantity: {
+        type: Number,
+        required: true
+  },
+
+  amount: {
+        type: Number,
+        required: true
+  },
+
+  idempotencyKey: {
+        type: String,
+        required: true,
+        unique: true
+  },
+
+  coupon: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "CouponSchema"
+}
+
 });
 
 
+const orderStats=mongoose.Schema({
 
+  user:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"UserDetails"
+  },
+
+  orders: {
+        type: Number,
+        default: 0
+  },
+
+    spent: {
+        type: Number,
+        default: 0
+    },
+
+    couponUsed: {
+        type: Number,
+        default: 0
+    },
+
+    items: {
+        type: Number,
+        default: 0
+    }
+
+})
+
+const OrderStats=mongoose.model("OrderStats" , orderStats)
+const OrderSchema=mongoose.model("OrderSchema" , userOrder)
 const CouponSchema=mongoose.model("CouponSchema" , couponSchema)
 const UserStats=mongoose.model("UserStats" , userStats)
 const User = mongoose.model("User", userSchema);
@@ -132,6 +198,8 @@ module.exports = {
   User,
   UserDetails,
   UserStats,
-
-  CouponSchema
+  OrderSchema,
+  CouponSchema,
+  OrderStats
+  
 };

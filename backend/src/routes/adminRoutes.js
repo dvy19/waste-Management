@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const {createCentres , getCentres , getCentreById, createItem , getSalesItems}=require('../controllers/AdminControllers');
+const {createCentres , getSalesItemById,  getCentres , getCentreById, createItem , getSalesItems}=require('../controllers/AdminControllers');
 
 const {getItemReq}=require('../controllers/ItemController')
 const authMiddleware=require('../middleware/authMiddleware')
@@ -11,6 +11,8 @@ const upload=require('../middleware/upload')
 
 router.post('/create-centre' , upload.single("image") , createCentres)
 router.get('/get-centres' , getCentres)
+
+router.post('/get-sales-item/:id' , getSalesItemById)
 
 router.get('/get-items' , authMiddleware, getItemReq)
 

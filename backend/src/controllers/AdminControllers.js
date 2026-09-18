@@ -205,4 +205,31 @@ const getSalesItems=async(req,res)=>{
         });
     }
 }
-module.exports={createCentres , getCentres , getCentreById , createItem , getSalesItems}
+
+
+const getSalesItemById=async(req,res)=>{
+
+    try{
+
+        const id=req.params.id;
+        console.log(id)
+
+        const item=await SaleItem.findOne({_id:id})
+
+        console.log(item)
+
+        res.status(200).json({
+            message:"item rendered",
+            item
+        })
+
+    }
+    catch(err){
+        console.log(`${err}`)
+
+        res.status(500).json({
+            message: "Server error"
+        });
+    }
+}
+module.exports={createCentres , getCentres , getCentreById , createItem , getSalesItems , getSalesItemById}

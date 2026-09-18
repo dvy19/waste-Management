@@ -16,6 +16,8 @@ const cookieParser = require("cookie-parser");
 
 app.use(cookieParser())
 
+const { connectRedis } = require('./src/config/redis');
+
 const authRoutes=require('./src/routes/authRoutes')
 const adminRoutes=require('./src/routes/adminRoutes')
 const itemRoutes=require('./src/routes/itemRoutes')
@@ -33,7 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(cors({
-  origin: ["http://localhost:5173" , "http://localhost:5174"],
+  origin: ["http://localhost:5173" , "http://localhost:5174" , "http://localhost:4173"],
   credentials: true
 }));
 
@@ -50,6 +52,8 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
     await connectDB();
+
+    await connectRedis();
 
     function startIt(){
         console.log(`Server running on port ${PORT}`);
