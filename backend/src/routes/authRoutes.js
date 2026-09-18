@@ -25,6 +25,7 @@ router.post("/register", register);
 router.post("/login", login);
 
 router.post("/create-profile", upload.single("profile"), authMiddleware , createProfile);
+
 router.get('/get-profile' , authMiddleware , getProfile)
 
 router.post('/create-order' , authMiddleware , createOrder)

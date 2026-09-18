@@ -194,7 +194,7 @@ const getSalesItems=async(req,res)=>{
 
         res.status(200).json({
             message:"all items rendered",
-            items
+            items:items
         })
     }
     catch(err){
