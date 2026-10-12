@@ -6,6 +6,8 @@ const centre=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
     },
 
+    image:String,
+
     name:String,
 
     address:String,

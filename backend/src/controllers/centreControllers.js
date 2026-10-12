@@ -7,16 +7,43 @@ const centreDetails=async(req,res)=>{
 
         const user=req.user.userId;
 
+        const coordinates = JSON.parse(req.body.coordinates);
+
+
         const{
             name,
             owner,
             timing,
-            coordinates,
             address,
             description,
             category,
-            established
+            established,
+            
         } = req.body;
+
+        let image=null;
+
+        if (req.file) {
+                    image = await new Promise((resolve, reject) => {
+                        const stream = cloudinary.uploader.upload_stream(
+                            {
+                                folder: "ngo-app/centre-profiles",
+                                resource_type: "image"
+                            },
+                            (error, result) => {
+        
+                                if (error) {
+                                    reject(error);
+                                } else {
+                                    resolve(result.secure_url);
+                                }
+        
+                            }
+                        );
+        
+                        stream.end(req.file.buffer);
+                    });
+                }
 
 
         const centre=await Centre.create({
@@ -28,7 +55,8 @@ const centreDetails=async(req,res)=>{
             description,
             category,
             established,
-            user
+            user,
+            image
         })
 
         res.status(201).json({
