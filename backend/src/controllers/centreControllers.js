@@ -118,4 +118,28 @@ const getCentreById=async(req,res)=>{
         console.log(err)
     }
 }
-module.exports={centreDetails , getCentres , getCentreById}
+
+const getMyCentre=async(req,res)=>{
+
+    try{
+
+        const user=req.user.userId;
+
+        const centre=await Centre.findOne({user:user})
+
+        res.status(200).json(
+            {
+                message:"centre rendered",
+                centre
+
+            }
+        )
+    }
+
+    catch(err){
+        res.status(500).json(err)
+
+        console.log(err)
+    }
+}
+module.exports={centreDetails , getCentres , getCentreById , getMyCentre}
