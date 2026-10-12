@@ -5,6 +5,10 @@ require("dotenv").config();
 
 const app = express();
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./src/config/swagger");
+
+
 app.use(express.json());
 
 const connectDB = require('./src/config/db');
@@ -22,6 +26,7 @@ const authRoutes=require('./src/routes/authRoutes')
 const adminRoutes=require('./src/routes/adminRoutes')
 const itemRoutes=require('./src/routes/itemRoutes')
 
+const centreRoutes=require("./src/routes/centreRoutes")
 
 
 
@@ -47,6 +52,13 @@ app.get("/api/health", (req, res) => {
 app.use("/api/user", authRoutes);
 app.use('/api/admin' , adminRoutes);
 app.use('/api/item' , itemRoutes)
+app.use('/api/centres' , centreRoutes)
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec)
+);
 
 const PORT = process.env.PORT || 5000;
 

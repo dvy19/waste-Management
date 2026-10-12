@@ -26,6 +26,8 @@
     "multer": "^2.3.0",
     "razorpay": "^2.9.8",
     "redis": "^6.2.1",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1"
   }
 }
