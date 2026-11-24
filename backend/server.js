@@ -2,8 +2,18 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-
 const app = express();
+
+
+
+app.use(cors({
+  origin: ["http://localhost:5173" , "http://localhost:5174" , "http://localhost:4173" ,"https://waste-manage-website.vercel.app/"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./src/config/swagger");
@@ -39,11 +49,6 @@ initializeSocket(server)
 app.get("/", (req, res) => {
     res.send("Server is running");
 });
-
-app.use(cors({
-  origin: ["http://localhost:5173" , "http://localhost:5174" , "http://localhost:4173" ,"https://waste-manage-website.vercel.app/"],
-  credentials: true
-}));
 
 // Health check
 app.get("/api/health", (req, res) => {
