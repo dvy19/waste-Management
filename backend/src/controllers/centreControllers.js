@@ -79,8 +79,16 @@ const getCentres=async(req,res)=>{
 
     try{
 
+        const { category} = req.query;
 
-        const centres=await Centres.find()
+        const filter={}
+
+        if(category){
+            filter.category=category
+        }
+
+
+        const centres=await Centre.find(filter)
 
         res.status(200).json({
             message:"centres rendered",

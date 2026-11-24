@@ -25,6 +25,7 @@ const { connectRedis } = require('./src/config/redis');
 const authRoutes=require('./src/routes/authRoutes')
 const adminRoutes=require('./src/routes/adminRoutes')
 const itemRoutes=require('./src/routes/itemRoutes')
+const rewardRoutes=require('./src/routes/rewardRoutes')
 
 const centreRoutes=require("./src/routes/centreRoutes")
 
@@ -40,7 +41,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(cors({
-  origin: ["http://localhost:5173" , "http://localhost:5174" , "http://localhost:4173"],
+  origin: ["http://localhost:5173" , "http://localhost:5174" , "http://localhost:4173" ,"https://waste-manage-website.vercel.app/"],
   credentials: true
 }));
 
@@ -53,6 +54,7 @@ app.use("/api/user", authRoutes);
 app.use('/api/admin' , adminRoutes);
 app.use('/api/item' , itemRoutes)
 app.use('/api/centres' , centreRoutes)
+app.use('/api/reward' , rewardRoutes)
 
 app.use(
   "/api-docs",

@@ -1,0 +1,51 @@
+item_name,category,material,weight_kg,age_years,condition,reusability,reward_points
+Office Chair Frame,Furniture,Iron,9.1,3,Poor,Low,10
+Electric Kettle,Electronics,Mixed Electronics,1.6,1,Good,Low,5
+Dining Table,Furniture,Steel,22.9,0,Good,High,95
+Electric Kettle,Electronics,Mixed Electronics,2.0,6,Fair,Medium,5
+Almirah,Furniture,Iron,28.2,13,Fair,Low,60
+Table Fan,Electronics,Mixed Electronics,2.7,1,Poor,Low,5
+Ceiling Fan,Electronics,Copper,3.0,14,Good,High,10
+Electric Motor,Electronics,Copper,8.0,2,Good,High,35
+Inverter,Electronics,Mixed Electronics,16.9,3,Good,Low,35
+Microwave Oven,Electronics,Mixed Electronics,10.7,12,Fair,Low,10
+Microwave Oven,Electronics,Mixed Electronics,13.4,7,Good,Medium,20
+Ceiling Fan,Electronics,Copper,3.5,11,Fair,Medium,5
+Dining Table,Furniture,Steel,20.1,7,Fair,Medium,45
+Electric Kettle,Electronics,Mixed Electronics,1.3,3,Good,High,5
+Storage Rack,Furniture,Steel,18.1,10,Fair,Low,25
+Printer,Electronics,Mixed Electronics,6.3,5,Fair,Medium,10
+Steel Utensils,Metal,Steel,3.2,8,Good,Medium,5
+Printer,Electronics,Mixed Electronics,6.5,6,Fair,High,10
+Iron Gate,Furniture,Iron,32.3,1,Excellent,Low,115
+Fridge,Electronics,Mixed Electronics,44.8,13,Good,Medium,85
+Inverter,Electronics,Mixed Electronics,18.3,8,Excellent,Low,35
+Office Chair Frame,Furniture,Iron,8.0,10,Excellent,High,20
+Table Fan,Electronics,Mixed Electronics,3.4,7,Poor,High,5
+Desktop CPU,Electronics,Mixed Electronics,7.9,8,Good,Medium,20
+Office Chair Frame,Furniture,Iron,8.8,10,Good,Low,15
+Ceiling Fan,Electronics,Copper,3.6,5,Good,High,10
+Water Pump,Electronics,Mixed Electronics,9.7,7,Poor,High,20
+Laptop,Electronics,Mixed Electronics,1.7,3,Poor,High,5
+Dining Table,Furniture,Steel,25.9,2,Excellent,Medium,95
+Iron Gate,Furniture,Iron,38.7,4,Good,High,150
+Fridge,Electronics,Mixed Electronics,43.4,13,Excellent,High,110
+Washing Machine,Electronics,Mixed Electronics,43.6,9,Fair,Medium,65
+Ceiling Fan,Electronics,Copper,3.2,3,Fair,Low,5
+Almirah,Furniture,Iron,30.3,18,Good,Medium,90
+Almirah,Furniture,Iron,34.4,7,Poor,Low,65
+Table Fan,Electronics,Mixed Electronics,3.3,1,Good,Medium,10
+Iron Pan,Metal,Iron,2.0,15,Fair,Medium,5
+Copper Wire Bundle,Metal,Copper,2.2,3,Poor,Medium,5
+Ceiling Fan,Electronics,Copper,3.3,1,Good,High,15
+Office Chair Frame,Furniture,Iron,8.7,0,Fair,Medium,20
+Office Chair Frame,Furniture,Iron,8.0,7,Poor,Low,10
+Steel Utensils,Metal,Steel,3.4,7,Excellent,Low,5
+Electric Kettle,Electronics,Mixed Electronics,2.0,8,Excellent,High,5
+Microwave Oven,Electronics,Mixed Electronics,13.8,2,Fair,Medium,25
+Electric Motor,Electronics,Copper,10.9,0,Excellent,Medium,50
+Steel Utensils,Metal,Steel,2.8,9,Fair,High,5
+Electric Kettle,Electronics,Mixed Electronics,1.3,3,Fair,High,5
+Printer,Electronics,Mixed Electronics,4.9,8,Poor,Medium,5
+Storage Rack,Furniture,Steel,14.7,5,Poor,Medium,25
+Fridge,Electronics,Mixed Electronics,40.2,2,Good,Medium,110

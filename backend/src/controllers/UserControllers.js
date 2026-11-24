@@ -155,28 +155,8 @@ const createProfile=async(req,res)=>{
             itemsAdded: 0
         });
 
-        let profileImage = null;
-        if (req.file) {
-            profileImage = await new Promise((resolve, reject) => {
-                const stream = cloudinary.uploader.upload_stream(
-                    {
-                        folder: "ngo-app/user-profiles",
-                        resource_type: "image"
-                    },
-                    (error, result) => {
-
-                        if (error) {
-                            reject(error);
-                        } else {
-                            resolve(result.secure_url);
-                        }
-
-                    }
-                );
-
-                stream.end(req.file.buffer);
-            });
-        }
+        
+        
 
         const userProfile=await UserDetails.create({
             city,pinCode,address,coordinates , user:user , profile:profileImage , phoneNumber
