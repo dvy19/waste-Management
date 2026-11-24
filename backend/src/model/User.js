@@ -1,5 +1,17 @@
 const mongoose = require("mongoose");
 
+const userSchema=new mongoose.Schema({
+
+  name:String,
+
+  email:String,
+
+  password:String,
+
+  role:String
+
+
+})
 
 const userDetailsSchema = new mongoose.Schema(
   {
@@ -163,7 +175,7 @@ const OrderStats=mongoose.model("OrderStats" , orderStats)
 const OrderSchema=mongoose.model("OrderSchema" , userOrder)
 const CouponSchema=mongoose.model("CouponSchema" , couponSchema)
 const UserStats=mongoose.model("UserStats" , userStats)
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema );
 const UserDetails = mongoose.model("UserDetails", userDetailsSchema);
 
 module.exports = {
